@@ -48,7 +48,7 @@ Or it is possible to use more elaborated JSON if content type or resource name n
         "my_attachment" : {
             "_content_type" : "application/pdf",
             "_name" : "resource/name/of/my.pdf",
-            "content" : "... base64 encoded attachment ..."
+            "file" : "... base64 encoded attachment ..."
         }
     }
 
