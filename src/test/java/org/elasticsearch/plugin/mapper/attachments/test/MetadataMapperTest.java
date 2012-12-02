@@ -1,6 +1,7 @@
 package org.elasticsearch.plugin.mapper.attachments.test;
 
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.common.io.Streams;
 import org.elasticsearch.common.network.NetworkUtils;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.index.query.DisMaxQueryBuilder;
@@ -12,11 +13,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.testng.annotations.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.elasticsearch.client.Requests.putMappingRequest;
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
@@ -120,17 +119,21 @@ public class MetadataMapperTest {
 
     protected void indexContentOf(String filename) throws URISyntaxException, IOException {
         URL resource = MetadataMapperTest.class.getClassLoader().getResource("org/elasticsearch/plugin/mapper/attachments/test/" + filename);
-        Path path = Paths.get(resource.toURI());
+        InputStream is = resource.openStream();
+        try {
 
-        node.client().prepareIndex(INDEX_NAME, CONTENT_NAME, filename).setSource(
-            jsonBuilder().startObject()
-                .startObject(RAW_FILE_CONTENT_FIELDNAME)
-                    .field("_name", path.getFileName().toString())
-                    .field("_content_type", "text/html")
-                    .field("content", Files.readAllBytes(path))
+            node.client().prepareIndex(INDEX_NAME, CONTENT_NAME, filename).setSource(
+                jsonBuilder().startObject()
+                    .startObject(RAW_FILE_CONTENT_FIELDNAME)
+                        .field("_name", filename)
+                        .field("_content_type", "text/html")
+                        .field("content", Streams.copyToByteArray(is))
+                    .endObject()
                 .endObject()
-            .endObject()
-        ).execute().actionGet();
+            ).execute().actionGet();
+        } finally {
+            is.close();
+        }
     }
 
     protected void createIndex() throws IOException {
