@@ -330,23 +330,53 @@ public class AttachmentMapper implements Mapper {
         contentMapper.parse(context);
 
 
-        context.externalValue(name);
-        nameMapper.parse(context);
+        try {
+            context.externalValue(name);
+            nameMapper.parse(context);
+        } catch(MapperParsingException e){
+            // If problem occurs, field will be considered null
+            // See https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/15
+        }
 
-        context.externalValue(metadata.get(Metadata.DATE));
-        dateMapper.parse(context);
+        try {
+            context.externalValue(metadata.get(Metadata.DATE));
+            dateMapper.parse(context);
+        } catch(MapperParsingException e){
+            // If problem occurs, field will be considered null
+            // See https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/15
+        }
 
-        context.externalValue(metadata.get(Metadata.TITLE));
-        titleMapper.parse(context);
+        try {
+            context.externalValue(metadata.get(Metadata.TITLE));
+            titleMapper.parse(context);
+        } catch(MapperParsingException e){
+            // If problem occurs, field will be considered null
+            // See https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/15
+        }
 
-        context.externalValue(metadata.get(Metadata.AUTHOR));
-        authorMapper.parse(context);
+        try {
+            context.externalValue(metadata.get(Metadata.AUTHOR));
+            authorMapper.parse(context);
+        } catch(MapperParsingException e){
+            // If problem occurs, field will be considered null
+            // See https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/15
+        }
 
-        context.externalValue(metadata.get(Metadata.KEYWORDS));
-        keywordsMapper.parse(context);
+        try {
+            context.externalValue(metadata.get(Metadata.KEYWORDS));
+            keywordsMapper.parse(context);
+        } catch(MapperParsingException e){
+            // If problem occurs, field will be considered null
+            // See https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/15
+        }
 
-        context.externalValue(metadata.get(Metadata.CONTENT_TYPE));
-        contentTypeMapper.parse(context);
+        try {
+            context.externalValue(metadata.get(Metadata.CONTENT_TYPE));
+            contentTypeMapper.parse(context);
+        } catch(MapperParsingException e){
+            // If problem occurs, field will be considered null
+            // See https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/15
+        }
     }
 
     @Override
