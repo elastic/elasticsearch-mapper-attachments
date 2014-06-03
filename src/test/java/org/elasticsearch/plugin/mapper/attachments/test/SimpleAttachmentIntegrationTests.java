@@ -20,9 +20,11 @@
 package org.elasticsearch.plugin.mapper.attachments.test;
 
 import org.elasticsearch.action.count.CountResponse;
+import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.mapper.MapperParsingException;
+import org.elasticsearch.plugins.PluginsService;
 import org.elasticsearch.test.ElasticsearchIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +43,14 @@ import static org.hamcrest.Matchers.is;
  */
 @ElasticsearchIntegrationTest.ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE)
 public class SimpleAttachmentIntegrationTests extends ElasticsearchIntegrationTest {
+
+    @Override
+    protected Settings nodeSettings(int nodeOrdinal) {
+        return ImmutableSettings.builder()
+                .put(super.nodeSettings(nodeOrdinal))
+                .put("plugins." + PluginsService.LOAD_PLUGIN_FROM_CLASSPATH, true)
+                .build();
+    }
 
     @Before
     public void createEmptyIndex() throws Exception {
