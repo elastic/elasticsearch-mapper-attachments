@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.equalTo;
 /**
  * Test case for issue https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/18
  */
+@ElasticsearchIntegrationTest.ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE)
 public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegrationTest {
     private boolean ignore_errors = true;
 
@@ -55,7 +56,6 @@ public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegration
         ignore_errors = true;
         logger.info("creating index [test]");
         createIndex("test");
-        ensureGreen();
 
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multipledocs/test-mapping.json");
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/htmlWithValidDateMeta.html");
@@ -83,7 +83,6 @@ public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegration
 
         logger.info("creating index [test]");
         createIndex("test");
-        ensureGreen();
 
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multipledocs/test-mapping.json");
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/htmlWithValidDateMeta.html");

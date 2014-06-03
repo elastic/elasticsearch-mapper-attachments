@@ -20,6 +20,7 @@
 package org.elasticsearch.plugin.mapper.attachments.test;
 
 import org.elasticsearch.action.count.CountResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.test.ElasticsearchIntegrationTest;
@@ -33,17 +34,18 @@ import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilde
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.queryString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 /**
  *
  */
+@ElasticsearchIntegrationTest.ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE)
 public class SimpleAttachmentIntegrationTests extends ElasticsearchIntegrationTest {
 
     @Before
     public void createEmptyIndex() throws Exception {
         logger.info("creating index [test]");
         createIndex("test");
-        ensureGreen();
     }
 
     @Override
@@ -119,4 +121,30 @@ public class SimpleAttachmentIntegrationTests extends ElasticsearchIntegrationTe
 
         index("test", "person", jsonBuilder().startObject().field("file").startObject().endObject());
     }
+
+    @Test
+    public void testContentTypeAndName() throws Exception {
+        String dummyContentType = "text/my-dummy-content-type";
+        String dummyName = "my-dummy-name-txt";
+        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/xcontent/test-mapping-store-content-type.json");
+        byte[] txt = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/testContentLength.txt");
+
+        client().admin().indices().putMapping(putMappingRequest("test").type("person").source(mapping)).actionGet();
+
+        index("test", "person", jsonBuilder().startObject().field("file").startObject().field("content", txt)
+                .field("_content_type", dummyContentType)
+                .field("_name", dummyName)
+                .endObject());
+        refresh();
+
+        SearchResponse response = client().prepareSearch("test")
+                .addField("content_type")
+                .addField("name")
+                .execute().get();
+        String contentType = response.getHits().getAt(0).getFields().get("file.content_type").getValue();
+        String name = response.getHits().getAt(0).getFields().get("file.name").getValue();
+        assertThat(contentType, is(dummyContentType));
+        assertThat(name, is(dummyName));
+    }
+
 }
