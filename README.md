@@ -14,10 +14,12 @@ In order to install the plugin, simply run: `bin/plugin -install elasticsearch/e
 
 |   Attachment Mapper Plugin  | elasticsearch         |  Tika  | Release date |
 |-----------------------------|-----------------------|--------|:------------:|
+| 2.2.1-SNAPSHOT              | 1.2.0 -> 1.2          |  1.5   |  XXXX-XX-XX  |
 | 2.2.0                       | 1.2.0 -> 1.2          |  1.5   |  2014-07-25  |
 
 Please read documentation relative to the version you are using:
 
+* [2.2.1-SNAPSHOT](https://github.com/elasticsearch/elasticsearch-mapper-attachments/blob/es-1.2/README.md)
 * [2.2.0](https://github.com/elasticsearch/elasticsearch-mapper-attachments/blob/v2.2.0/README.md)
 
 The `attachment` type allows to index different "attachment" type field (encoded as `base64`), for example,
