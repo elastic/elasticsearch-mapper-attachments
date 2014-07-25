@@ -40,16 +40,16 @@ import static org.elasticsearch.plugin.mapper.attachments.tika.TikaInstance.tika
 
 /**
  * <pre>
- *      field1 : "..."
+ *      "field1" : "..."
  * </pre>
  * <p>Or:
  * <pre>
  * {
- *      file1 : {
- *          _content_type : "application/pdf",
- *          _content_length : "500000000",
- *          _name : "..../something.pdf",
- *          content : ""
+ *      "file1" : {
+ *          "_content_type" : "application/pdf",
+ *          "_content_length" : "500000000",
+ *          "_name" : "..../something.pdf",
+ *          "_content" : ""
  *      }
  * }
  * </pre>
@@ -389,7 +389,11 @@ public class AttachmentMapper implements Mapper {
             parsedContent = tika().parseToString(new BytesStreamInput(content, false), metadata, indexedChars);
         } catch (Throwable e) {
             // #18: we could ignore errors when Tika does not parse data
-            if (!ignoreErrors) throw new MapperParsingException("Failed to extract [" + indexedChars + "] characters of text for [" + name + "]", e);
+            if (!ignoreErrors) {
+                throw new MapperParsingException("Failed to extract [" + indexedChars + "] characters of text for [" + name + "]", e);
+            } else {
+                logger.debug("Failed to extract [{}] characters of text for [{}]: [{}]", indexedChars, name, e.getMessage());
+            }
             return;
         }
 
@@ -407,7 +411,7 @@ public class AttachmentMapper implements Mapper {
                 context.externalValue(language);
                 languageMapper.parse(context);
             } catch(Throwable t) {
-                logger.warn("Cannot detect language: {}", t.getMessage());
+                logger.debug("Cannot detect language: [{}]", t.getMessage());
             }
         }
 
@@ -416,7 +420,8 @@ public class AttachmentMapper implements Mapper {
             nameMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing name: {}", e.getMessage());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing name: [{}]",
+                    e.getMessage());
         }
 
         try {
@@ -424,7 +429,8 @@ public class AttachmentMapper implements Mapper {
             dateMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing date: {}: {}", e.getMessage(), context.externalValue());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing date: [{}]: [{}]",
+                    e.getMessage(), context.externalValue());
         }
 
         try {
@@ -432,7 +438,8 @@ public class AttachmentMapper implements Mapper {
             titleMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing title: {}: {}", e.getMessage(), context.externalValue());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing title: [{}]: [{}]",
+                    e.getMessage(), context.externalValue());
         }
 
         try {
@@ -440,7 +447,8 @@ public class AttachmentMapper implements Mapper {
             authorMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing author: {}: {}", e.getMessage(), context.externalValue());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing author: [{}]: [{}]",
+                    e.getMessage(), context.externalValue());
         }
 
         try {
@@ -448,7 +456,8 @@ public class AttachmentMapper implements Mapper {
             keywordsMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing keywords: {}: {}", e.getMessage(), context.externalValue());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing keywords: [{}]: [{}]",
+                    e.getMessage(), context.externalValue());
         }
 
         try {
@@ -460,7 +469,7 @@ public class AttachmentMapper implements Mapper {
             contentTypeMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing content_type: {}: {}", e.getMessage(), context.externalValue());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing content_type: [{}]: [{}]", e.getMessage(), context.externalValue());
         }
 
         try {
@@ -474,7 +483,7 @@ public class AttachmentMapper implements Mapper {
             contentLengthMapper.parse(context);
         } catch(MapperParsingException e){
             if (!ignoreErrors) throw e;
-            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing content_length: {}: {}", e.getMessage(), context.externalValue());
+            if (logger.isDebugEnabled()) logger.debug("Ignoring MapperParsingException catch while parsing content_length: [{}]: [{}]", e.getMessage(), context.externalValue());
         }
     }
 
