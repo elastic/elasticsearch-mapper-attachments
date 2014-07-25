@@ -385,7 +385,11 @@ public class AttachmentMapper implements Mapper {
             parsedContent = tika().parseToString(new BytesStreamInput(content, false), metadata, indexedChars);
         } catch (Throwable e) {
             // #18: we could ignore errors when Tika does not parse data
-            if (!ignoreErrors) throw new MapperParsingException("Failed to extract [" + indexedChars + "] characters of text for [" + name + "]", e);
+            if (!ignoreErrors) {
+                throw new MapperParsingException("Failed to extract [" + indexedChars + "] characters of text for [" + name + "]", e);
+            } else {
+                logger.warn("Failed to extract [" + indexedChars + "] characters of text for [" + name + "]", e.getMessage());
+            }
             return;
         }
 
