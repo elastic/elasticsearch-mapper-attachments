@@ -38,6 +38,7 @@
         <tests.output>onerror</tests.output>
         <tests.client.ratio></tests.client.ratio>
         <es.logger.level>INFO</es.logger.level>
+        <poi.version>3.10.1</poi.version>
     </properties>
 
     <repositories>
@@ -106,6 +107,34 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- START hardcode POI version here to fix security issues -->
+        <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi</artifactId>
+          <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-scratchpad</artifactId>
+          <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml</artifactId>
+          <version>${poi.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>stax</groupId>
+              <artifactId>stax-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>xml-apis</groupId>
+              <artifactId>xml-apis</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <!-- END hardcode POI version -->
 
     </dependencies>
 
