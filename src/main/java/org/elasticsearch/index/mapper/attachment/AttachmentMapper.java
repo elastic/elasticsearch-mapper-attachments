@@ -95,6 +95,8 @@ public class AttachmentMapper implements Mapper {
 
         private Mapper.Builder languageBuilder = stringField("language");
 
+        private Mapper.Builder fileBuilder = null;
+
         public Builder(String name) {
             super(name);
             this.builder = this;
@@ -151,6 +153,11 @@ public class AttachmentMapper implements Mapper {
             return this;
         }
 
+        public Builder file(Mapper.Builder fileBuilder) {
+            this.fileBuilder = fileBuilder;
+            return this;
+        }
+
         @Override
         public AttachmentMapper build(BuilderContext context) {
             ContentPath.Type origPathType = context.path().pathType();
@@ -169,6 +176,10 @@ public class AttachmentMapper implements Mapper {
             Mapper contentTypeMapper = contentTypeBuilder.build(context);
             Mapper contentLength = contentLengthBuilder.build(context);
             Mapper language = languageBuilder.build(context);
+            Mapper file = null;
+            if (fileBuilder != null) {
+                file = fileBuilder.build(context);
+            }
             context.path().remove();
 
             context.path().pathType(origPathType);
@@ -194,7 +205,7 @@ public class AttachmentMapper implements Mapper {
                 langDetect = Boolean.FALSE;
             }
 
-            return new AttachmentMapper(name, pathType, defaultIndexedChars, ignoreErrors, langDetect, contentMapper, dateMapper, titleMapper, nameMapper, authorMapper, keywordsMapper, contentTypeMapper, contentLength, language);
+            return new AttachmentMapper(name, pathType, defaultIndexedChars, ignoreErrors, langDetect, contentMapper, dateMapper, titleMapper, nameMapper, authorMapper, keywordsMapper, contentTypeMapper, contentLength, language, file);
         }
     }
 
@@ -214,7 +225,8 @@ public class AttachmentMapper implements Mapper {
      *          author : {store : "yes"},
      *          keywords : {store : "yes"},
      *          content_type : {store : "yes"},
-     *          content_length : {store : "yes"}
+     *          content_length : {store : "yes"},
+     *          file : {store: "yes"}
      *      }
      * }
      * </pre>
@@ -265,6 +277,8 @@ public class AttachmentMapper implements Mapper {
                             builder.contentLength(parserContext.typeParser(IntegerFieldMapper.CONTENT_TYPE).parse("content_length", (Map<String, Object>) propNode, parserContext));
                         } else if ("language".equals(propName)) {
                             builder.language(parserContext.typeParser(StringFieldMapper.CONTENT_TYPE).parse("language", (Map<String, Object>) propNode, parserContext));
+                        } else if ("file".equals(propName)) {
+                            builder.file(parserContext.typeParser(StringFieldMapper.CONTENT_TYPE).parse("file", (Map<String, Object>) propNode, parserContext));
                         }
                     }
                 }
@@ -302,9 +316,11 @@ public class AttachmentMapper implements Mapper {
 
     private final Mapper languageMapper;
 
+    private final Mapper fileMapper;
+
     public AttachmentMapper(String name, ContentPath.Type pathType, int defaultIndexedChars, Boolean ignoreErrors, Boolean defaultLangDetect, Mapper contentMapper,
                             Mapper dateMapper, Mapper titleMapper, Mapper nameMapper, Mapper authorMapper,
-                            Mapper keywordsMapper, Mapper contentTypeMapper, Mapper contentLengthMapper, Mapper languageMapper) {
+                            Mapper keywordsMapper, Mapper contentTypeMapper, Mapper contentLengthMapper, Mapper languageMapper, Mapper fileMapper) {
         this.name = name;
         this.pathType = pathType;
         this.defaultIndexedChars = defaultIndexedChars;
@@ -319,6 +335,7 @@ public class AttachmentMapper implements Mapper {
         this.contentTypeMapper = contentTypeMapper;
         this.contentLengthMapper = contentLengthMapper;
         this.languageMapper = languageMapper;
+        this.fileMapper = fileMapper;
     }
 
     @Override
@@ -399,6 +416,10 @@ public class AttachmentMapper implements Mapper {
 
         context.externalValue(parsedContent);
         contentMapper.parse(context);
+        if (fileMapper != null) {
+            context.externalValue(parsedContent);
+            fileMapper.parse(context);
+        }
 
         if (langDetect) {
             try {
@@ -503,6 +524,9 @@ public class AttachmentMapper implements Mapper {
         contentTypeMapper.traverse(fieldMapperListener);
         contentLengthMapper.traverse(fieldMapperListener);
         languageMapper.traverse(fieldMapperListener);
+        if (fileMapper != null) {
+            fileMapper.traverse(fieldMapperListener);
+        }
     }
 
     @Override
@@ -520,6 +544,9 @@ public class AttachmentMapper implements Mapper {
         contentTypeMapper.close();
         contentLengthMapper.close();
         languageMapper.close();
+        if (fileMapper != null) {
+            fileMapper.close();
+        }
     }
 
     @Override
@@ -538,6 +565,9 @@ public class AttachmentMapper implements Mapper {
         contentTypeMapper.toXContent(builder, params);
         contentLengthMapper.toXContent(builder, params);
         languageMapper.toXContent(builder, params);
+        if (fileMapper != null) {
+            fileMapper.toXContent(builder, params);
+        }
         builder.endObject();
 
         builder.endObject();

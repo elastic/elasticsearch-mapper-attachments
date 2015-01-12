@@ -1,0 +1,18 @@
+{
+    "person":{
+        "properties":{
+            "file1":{
+                "type":"attachment",
+                "fields": {
+                    "file": {
+                        "type": "string",
+                        "analyzer": "plain"
+                    }
+                }
+            },
+            "file2":{
+                "type":"attachment"
+            }
+        }
+    }
+}
