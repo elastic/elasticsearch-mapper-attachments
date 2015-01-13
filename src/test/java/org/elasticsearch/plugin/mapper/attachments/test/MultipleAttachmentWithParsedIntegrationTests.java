@@ -39,7 +39,7 @@ import static org.hamcrest.Matchers.equalTo;
  * Test case for issue https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/18
  */
 @ElasticsearchIntegrationTest.ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE)
-public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegrationTest {
+public class MultipleAttachmentWithParsedIntegrationTests extends ElasticsearchIntegrationTest {
     private boolean ignore_errors = true;
 
     @Override
@@ -55,6 +55,7 @@ public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegration
         return settingsBuilder()
                 .put("index.numberOfReplicas", 0)
                 .put("index.mapping.attachment.ignore_errors", ignore_errors)
+                .put("index.analysis.analyzer.plain.tokenizer", "whitespace")
             .build();
     }
 
@@ -67,7 +68,7 @@ public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegration
         logger.info("creating index [test]");
         createIndex("test");
 
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multipledocs/test-mapping.json");
+        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multipledocs/test-mapping-file.json");
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/htmlWithValidDateMeta.html");
         byte[] pdf = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/encrypted.pdf");
 
@@ -83,7 +84,10 @@ public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegration
         countResponse = client().prepareCount("test").setQuery(queryString("World").defaultField("hello")).execute().get();
         assertThat(countResponse.getCount(), equalTo(1l));
 
-        countResponse = client().prepareCount("test").setQuery(queryString("file1.file:World").defaultField("hello")).execute().get();
+        countResponse = client().prepareCount("test").setQuery(queryString("file1.file:World")).execute().get();
+        assertThat(countResponse.getCount(), equalTo(1l));
+
+        countResponse = client().prepareCount("test").setQuery(queryString("file1.file:world")).execute().get();
         assertThat(countResponse.getCount(), equalTo(0l));
     }
 
@@ -97,7 +101,7 @@ public class MultipleAttachmentIntegrationTests extends ElasticsearchIntegration
         logger.info("creating index [test]");
         createIndex("test");
 
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multipledocs/test-mapping.json");
+        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multipledocs/test-mapping-file.json");
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/htmlWithValidDateMeta.html");
         byte[] pdf = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/xcontent/encrypted.pdf");
 
