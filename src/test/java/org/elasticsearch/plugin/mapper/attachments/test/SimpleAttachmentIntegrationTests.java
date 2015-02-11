@@ -164,10 +164,10 @@ public class SimpleAttachmentIntegrationTests extends ElasticsearchIntegrationTe
         index("test", "person", jsonBuilder().startObject().field("file", txt).endObject());
         refresh();
 
-        CountResponse countResponse = client().prepareCount("test").setQuery(queryString("Queen").defaultField("file")).execute().get();
+        CountResponse countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("file")).execute().get();
         assertThat(countResponse.getCount(), equalTo(1l));
 
-        countResponse = client().prepareCount("test").setQuery(queryString("Queen").defaultField("copy")).execute().get();
+        countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("copy")).execute().get();
         assertThat(countResponse.getCount(), equalTo(1l));
     }
 
@@ -181,10 +181,10 @@ public class SimpleAttachmentIntegrationTests extends ElasticsearchIntegrationTe
         index("test", "person", jsonBuilder().startObject().field("file", txt).endObject());
         refresh();
 
-        CountResponse countResponse = client().prepareCount("test").setQuery(queryString("Queen").defaultField("file")).execute().get();
+        CountResponse countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("file")).execute().get();
         assertThat(countResponse.getCount(), equalTo(1l));
 
-        countResponse = client().prepareCount("test").setQuery(queryString("Queen").defaultField("copy")).execute().get();
+        countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("copy")).execute().get();
         assertThat(countResponse.getCount(), equalTo(1l));
     }
 
