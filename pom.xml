@@ -66,6 +66,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.carrotsearch.randomizedtesting</groupId>
@@ -126,9 +132,10 @@
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-parsers</artifactId>
-            <version>1.5</version>
+            <version>1.7</version>
             <scope>compile</scope>
             <exclusions>
+                <!-- Not Apache2 License compatible -->
                 <exclusion>
                     <groupId>edu.ucar</groupId>
                     <artifactId>netcdf</artifactId>
@@ -148,13 +155,6 @@
             <artifactId>elasticsearch</artifactId>
             <version>${elasticsearch.version}</version>
             <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
             <scope>test</scope>
         </dependency>
 
