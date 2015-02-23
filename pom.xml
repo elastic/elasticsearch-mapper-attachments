@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.elasticsearch</groupId>
     <artifactId>elasticsearch-mapper-attachments</artifactId>
-    <version>2.4.3-SNAPSHOT</version>
+    <version>2.4.3</version>
     <packaging>jar</packaging>
     <name>Elasticsearch Mapper Attachment plugin</name>
     <description>The mapper attachments plugin adds the attachment type to Elasticsearch using Apache Tika.</description>
