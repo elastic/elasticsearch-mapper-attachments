@@ -38,6 +38,7 @@
         <tests.shuffle>true</tests.shuffle>
         <tests.output>onerror</tests.output>
         <tests.client.ratio></tests.client.ratio>
+        <tests.locale>random</tests.locale>
         <es.logger.level>INFO</es.logger.level>
     </properties>
 
@@ -217,6 +218,7 @@
                                 <tests.showSuccess>${tests.showSuccess}</tests.showSuccess>
                                 <tests.integration>${tests.integration}</tests.integration>
                                 <tests.cluster_seed>${tests.cluster_seed}</tests.cluster_seed>
+                                <tests.locale>${tests.locale}</tests.locale>
                                 <tests.client.ratio>${tests.client.ratio}</tests.client.ratio>
                                 <es.node.local>${env.ES_TEST_LOCAL}</es.node.local>
                                 <es.node.mode>${es.node.mode}</es.node.mode>
