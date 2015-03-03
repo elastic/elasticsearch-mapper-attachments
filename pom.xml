@@ -31,9 +31,9 @@
     </parent>
 
     <properties>
-        <elasticsearch.version>1.4.3</elasticsearch.version>
-        <lucene.maven.version>4.10.3</lucene.maven.version>
-        <lucene.version>4.10.3</lucene.version>
+        <elasticsearch.version>1.4.5-SNAPSHOT</elasticsearch.version>
+        <lucene.maven.version>4.10.4</lucene.maven.version>
+        <lucene.version>4.10.4</lucene.version>
         <tests.jvms>1</tests.jvms>
         <tests.shuffle>true</tests.shuffle>
         <tests.output>onerror</tests.output>
