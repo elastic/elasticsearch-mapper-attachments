@@ -3,36 +3,13 @@ Mapper Attachments Type for Elasticsearch
 
 The mapper attachments plugin adds the `attachment` type to Elasticsearch using [Apache Tika](http://lucene.apache.org/tika/).
 The `attachment` type allows to index different "attachment" type field (encoded as `base64`), for example,
-microsoft office formats, open document formats, ePub, HTML, and so on (full list can be found [here](http://tika.apache.org/1.8/formats.html)).
+microsoft office formats, open document formats, ePub, HTML, and so on (full list can be found [here](http://tika.apache.org/1.10/formats.html)).
 
-In order to install the plugin, run:
+## Version 3.0.0-SNAPSHOT for Elasticsearch: 2.0
 
-```sh
-bin/plugin install elasticsearch/elasticsearch-mapper-attachments/2.7.0
-```
+If you are looking for another version documentation, please refer to the 
+[compatibility matrix](https://github.com/elasticsearch/elasticsearch-mapper-attachments/#mapper-attachments-type-for-elasticsearch).
 
-You need to install a version matching your Elasticsearch version:
-
-|       Elasticsearch    | Attachments Plugin|                                                             Docs                                                                   |
-|------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------|
-|    master              | Build from source | See below                                                                                                                          |
-|    es-1.7              |     2.7.0         | [2.7.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v2.7.0/#version-270-for-elasticsearch-17)                  |
-|    es-1.6              |     2.6.0         | [2.6.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v2.6.0/#version-260-for-elasticsearch-16)                  |
-|    es-1.5              |     2.5.0         | [2.5.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v2.5.0/#version-250-for-elasticsearch-15)                  |
-|    es-1.4              |     2.4.3         | [2.4.3](https://github.com/elasticsearch/elasticsearch-mapper-attachments/tree/v2.4.3/#version-243-for-elasticsearch-14)                  |
-|    es-1.3              |     2.3.2         | [2.3.2](https://github.com/elasticsearch/elasticsearch-mapper-attachments/tree/v2.3.2/#version-232-for-elasticsearch-13)                  |
-|    es-1.2              |     2.2.1         | [2.2.1](https://github.com/elasticsearch/elasticsearch-mapper-attachments/tree/v2.2.1/#version-221-for-elasticsearch-12)                  |
-|    es-1.1              |     2.0.0         | [2.0.0](https://github.com/elasticsearch/elasticsearch-mapper-attachments/tree/v2.0.0/#mapper-attachments-type-for-elasticsearch)  |
-|    es-1.0              |     2.0.0         | [2.0.0](https://github.com/elasticsearch/elasticsearch-mapper-attachments/tree/v2.0.0/#mapper-attachments-type-for-elasticsearch)  |
-|    es-0.90             |     1.9.0         | [1.9.0](https://github.com/elasticsearch/elasticsearch-mapper-attachments/tree/v1.9.0/#mapper-attachments-type-for-elasticsearch)  |
-
-To build a `SNAPSHOT` version, you need to build it with Maven:
-
-```bash
-mvn clean install
-plugin --install mapper-attachments \
-       --url file:target/releases/elasticsearch-mapper-attachments-X.X.X-SNAPSHOT.zip
-```
 
 Using mapper attachments
 ------------------------
@@ -385,7 +362,7 @@ License
 
     This software is licensed under the Apache 2 license, quoted below.
 
-    Copyright 2009-2014 Elasticsearch <http://www.elasticsearch.org>
+    Copyright 2009-2015 Elasticsearch <http://www.elasticsearch.org>
 
     Licensed under the Apache License, Version 2.0 (the "License"); you may not
     use this file except in compliance with the License. You may obtain a copy of
