@@ -20,6 +20,7 @@
 package org.elasticsearch.plugin.mapper.attachments;
 
 import org.elasticsearch.common.inject.AbstractModule;
+import org.elasticsearch.index.analysis.attachment.RegisterAttachmentCharFilter;
 import org.elasticsearch.index.mapper.attachment.RegisterAttachmentType;
 
 /**
@@ -30,5 +31,6 @@ public class AttachmentsIndexModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(RegisterAttachmentType.class).asEagerSingleton();
+        bind(RegisterAttachmentCharFilter.class).asEagerSingleton();
     }
 }
