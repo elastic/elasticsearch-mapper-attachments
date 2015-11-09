@@ -1,3 +1,12 @@
+**IMPORTANT**: this project now moved to elasticsearch repository (from elasticsearch 3.0.0): 
+
+* [mapper-attachments](https://github.com/elastic/elasticsearch/tree/master/plugins/mapper-attachments) ([documentation](https://www.elastic.co/guide/en/elasticsearch/plugins/master/mapper-attachments.html))
+
+If you have a question about the plugin, please use [discuss.elastic.co](https://discuss.elastic.co/c/elasticsearch). 
+If you want to report a bug, please use [elasticsearch repository](https://github.com/elastic/elasticsearch/issues/new).
+
+---
+
 Mapper Attachments Type for Elasticsearch
 =========================================
 
