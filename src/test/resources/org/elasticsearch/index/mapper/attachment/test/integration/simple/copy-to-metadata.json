@@ -1,0 +1,19 @@
+{
+  "person": {
+    "properties": {
+      "file": {
+        "type": "attachment",
+        "path": "full",
+        "fields": {
+          "name": {
+            "type": "string",
+            "copy_to": "copy"
+          }
+        }
+      },
+      "copy": {
+        "type": "string"
+      }
+    }
+  }
+}

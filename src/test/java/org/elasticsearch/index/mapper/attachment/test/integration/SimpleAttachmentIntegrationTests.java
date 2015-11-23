@@ -198,6 +198,27 @@ public class SimpleAttachmentIntegrationTests extends AttachmentIntegrationTestC
         assertThatWithError(countResponse.getCount(), equalTo(1l));
     }
 
+    /**
+     * Test case for https://github.com/elastic/elasticsearch-mapper-attachments/issues/190
+     * copy_to metadata fields
+     */
+    @Test
+    public void testCopyToMetaData() throws Exception {
+        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/integration/simple/copy-to-subfield.json");
+        byte[] txt = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/attachment/test/sample-files/text-in-english.txt");
+
+        client().admin().indices().putMapping(putMappingRequest("test").type("person").source(mapping)).actionGet();
+
+        index("test", "person", jsonBuilder().startObject().field("file", txt).endObject());
+        refresh();
+
+        CountResponse countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("file")).execute().get();
+        assertThatWithError(countResponse.getCount(), equalTo(1l));
+
+        countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("copy")).execute().get();
+        assertThatWithError(countResponse.getCount(), equalTo(1l));
+    }
+
     @Test
     public void testHighlightAttachment() throws Exception {
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/integration/simple/test-highlight-mapping.json");
