@@ -156,3 +156,72 @@
 #            index: test
 #
 #    - match: { hits.total: 0 }
+
+---
+# https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/190
+# Encoded content with https://www.base64encode.org/
+#{\rtf1\ansi
+#Lorem ipsum dolor sit amet
+#\par }
+#"Copy To Feature":
+#
+#    - do:
+#        indices.create:
+#            index: test
+#            body:
+#              mappings:
+#                doc:
+#                  properties:
+#                    copy_dst:
+#                      type: string
+#                    doc:
+#                      type: attachment
+#                      fields:
+#                        name:
+#                          copy_to: copy_dst
+#    - do:
+#        cluster.health:
+#          wait_for_status: yellow
+#
+#    - do:
+#        index:
+#            index: test
+#            type: doc
+#            id: 1
+#            body:
+#              doc:
+#                _content: "e1xydGYxXGFuc2kNCkxvcmVtIGlwc3VtIGRvbG9yIHNpdCBhbWV0DQpccGFyIH0="
+#                _name: "name"
+#
+#    - do:
+#        indices.refresh: {}
+#
+#    - do:
+#        search:
+#            index: test
+#            body:
+#                query:
+#                    match:
+#                        doc.content: "ipsum"
+#
+#    - match: { hits.total: 1 }
+#
+#    - do:
+#        search:
+#            index: test
+#            body:
+#                query:
+#                    match:
+#                        doc.name: "name"
+#
+#    - match: { hits.total: 1 }
+#
+#    - do:
+#        search:
+#            index: test
+#            body:
+#                query:
+#                    match:
+#                        copy_dst: "name"
+#
+#    - match: { hits.total: 1 }
