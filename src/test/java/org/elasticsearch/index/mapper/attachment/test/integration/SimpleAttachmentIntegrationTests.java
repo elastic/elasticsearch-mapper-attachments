@@ -204,18 +204,23 @@ public class SimpleAttachmentIntegrationTests extends AttachmentIntegrationTestC
      */
     @Test
     public void testCopyToMetaData() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/integration/simple/copy-to-subfield.json");
+        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/integration/simple/copy-to-metadata.json");
         byte[] txt = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/attachment/test/sample-files/text-in-english.txt");
 
         client().admin().indices().putMapping(putMappingRequest("test").type("person").source(mapping)).actionGet();
 
-        index("test", "person", jsonBuilder().startObject().field("file", txt).endObject());
+        index("test", "person", jsonBuilder().startObject()
+                .startObject("file")
+                .field("_content", txt)
+                .field("_name", "name")
+                .endObject()
+                .endObject());
         refresh();
 
-        CountResponse countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("file")).execute().get();
+        CountResponse countResponse = client().prepareCount("test").setQuery(queryStringQuery("name").defaultField("file.name")).execute().get();
         assertThatWithError(countResponse.getCount(), equalTo(1l));
 
-        countResponse = client().prepareCount("test").setQuery(queryStringQuery("Queen").defaultField("copy")).execute().get();
+        countResponse = client().prepareCount("test").setQuery(queryStringQuery("name").defaultField("copy")).execute().get();
         assertThatWithError(countResponse.getCount(), equalTo(1l));
     }
 
