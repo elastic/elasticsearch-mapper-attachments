@@ -24,7 +24,6 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.AbstractIndexComponent;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.mapper.MapperService;
-import org.elasticsearch.index.settings.IndexSettings;
 
 /**
  *
@@ -32,7 +31,7 @@ import org.elasticsearch.index.settings.IndexSettings;
 public class RegisterAttachmentType extends AbstractIndexComponent {
 
     @Inject
-    public RegisterAttachmentType(Index index, @IndexSettings Settings indexSettings, MapperService mapperService) {
+    public RegisterAttachmentType(Index index, Settings indexSettings, MapperService mapperService) {
         super(index, indexSettings);
 
         mapperService.documentMapperParser().putTypeParser("attachment", new AttachmentMapper.TypeParser());
