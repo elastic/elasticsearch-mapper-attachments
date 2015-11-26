@@ -157,7 +157,7 @@
 #
 #    - match: { hits.total: 0 }
 
----
+#---
 # https://github.com/elasticsearch/elasticsearch-mapper-attachments/issues/190
 # Encoded content with https://www.base64encode.org/
 #{\rtf1\ansi
