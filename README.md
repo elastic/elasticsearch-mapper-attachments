@@ -20,7 +20,7 @@ Installation
 In order to install the plugin, run:
 
 ```sh
-bin/plugin install elasticsearch/elasticsearch-mapper-attachments/3.0.3
+bin/plugin install elasticsearch/elasticsearch-mapper-attachments/3.1.0
 ```
 
 You need to install a version matching your Elasticsearch version:
@@ -29,7 +29,7 @@ You need to install a version matching your Elasticsearch version:
 |------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------|
 |    master              |                   | See elasticsearch [master branch](https://github.com/elastic/elasticsearch/tree/master/plugins/mapper-attachments)                                                                                                                          |
 |    es-2.x              |                   | See elasticsearch [2.x branch](https://github.com/elastic/elasticsearch/tree/2.x/plugins/mapper-attachments)                                                                                                                          |
-|    es-2.1              | Build from source | [3.1.0-SNAPSHOT](https://github.com/elastic/elasticsearch-mapper-attachments/tree/es-2.1/#version-310-for-elasticsearch-21)                  |
+|    es-2.1              |     3.1.0         | [3.1.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.1.0/#version-310-for-elasticsearch-21)                  |
 |    es-2.0              |     3.0.3         | [3.0.3](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.0.3/#version-303-for-elasticsearch-20)                  |
 |    es-1.7              |     2.7.1         | [2.7.1](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v2.7.1/#version-271-for-elasticsearch-17)                  |
 |    es-1.6              |     2.6.0         | [2.6.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v2.6.0/#version-260-for-elasticsearch-16)                  |
