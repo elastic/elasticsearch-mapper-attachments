@@ -8,7 +8,7 @@ In practice, the plugin adds the `attachment` type when mapping properties so th
 Installation
 ------------
 
-## Version 3.1.0-SNAPSHOT for Elasticsearch: 2.1
+## Version 3.1.0 for Elasticsearch: 2.1
 
 If you are looking for another version documentation, please refer to the 
 [compatibility matrix](https://github.com/elasticsearch/elasticsearch-mapper-attachments/#mapper-attachments-type-for-elasticsearch).
