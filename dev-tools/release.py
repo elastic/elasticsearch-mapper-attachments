@@ -865,7 +865,7 @@ if __name__ == '__main__':
         update_documentation_to_released_version(README_FILE, project_url, release_version, src_branch,
                                                  elasticsearch_version)
         set_install_instructions(README_FILE, artifact_id, release_version)
-        add_pending_files(*pending_files)  # expects var args use * to expand
+        add_pending_files(README_FILE)
         commit_master(release_version)
 
         print('Finish Release -- dry_run: %s' % dry_run)
