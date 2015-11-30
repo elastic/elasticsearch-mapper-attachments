@@ -22,9 +22,12 @@ package org.elasticsearch.index.mapper.attachment.test.unit;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.DocumentMapperParser;
+import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.mapper.ParseContext;
 import org.elasticsearch.index.mapper.attachment.AttachmentMapper;
 import org.elasticsearch.index.mapper.attachment.test.MapperTestUtils;
@@ -111,6 +114,33 @@ public class SimpleAttachmentMapperTests extends AttachmentUnitTestCase {
         assertThat(doc.get(docMapper.mappers().getMapper("file.content_type").fieldType().names().indexName()), startsWith("application/xhtml+xml"));
         assertThat(doc.get(docMapper.mappers().getMapper("file.title").fieldType().names().indexName()), equalTo("XHTML test document"));
         assertThat(doc.get(docMapper.mappers().getMapper("file.content").fieldType().names().indexName()), containsString("This document tests the ability of Apache Tika to extract content"));
+    }
+
+    /**
+     * See issue https://github.com/elastic/elasticsearch-mapper-attachments/issues/169
+     * Mapping should not contain field names with dot.
+     */
+    public void testMapperErrorWithDotTwoLevels169() throws Exception {
+        XContentBuilder mappingBuilder = jsonBuilder();
+        mappingBuilder.startObject()
+                .startObject("mail")
+                .startObject("properties")
+                .startObject("attachments")
+                .startObject("properties")
+                .startObject("innerfield")
+                .field("type", "attachment")
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject();
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(createTempDir());
+        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapper docMapper = mapperParser.parse(mappingBuilder.string());
+        // this should not throw an exception
+        mapperParser.parse(docMapper.mapping().toString());
+        // the mapping may not contain a field name with a dot
+        assertFalse(docMapper.mapping().toString().contains("."));
     }
 
 }
