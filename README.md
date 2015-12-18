@@ -20,7 +20,7 @@ Installation
 In order to install the plugin, run:
 
 ```sh
-bin/plugin install elasticsearch/elasticsearch-mapper-attachments/3.1.0
+bin/plugin install elasticsearch/elasticsearch-mapper-attachments/3.0.4
 ```
 
 You need to install a version matching your Elasticsearch version:
@@ -29,7 +29,7 @@ You need to install a version matching your Elasticsearch version:
 |------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------|
 |    es-2.1              |     3.1.0         | [3.1.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.1.0/#version-310-for-elasticsearch-21)                  |
 |    2.1.0               |     3.1.0         | [3.1.0](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.1.0/#version-310-for-elasticsearch-21)                  |
-|    es-2.0              |     3.0.3         | [3.0.3](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.0.3/#version-303-for-elasticsearch-20)                  |
+|    es-2.0              |     3.0.4         | [3.0.4](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.0.4/#version-304-for-elasticsearch-20)                  |
 |    2.0.1               |     3.0.3         | [3.0.3](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.0.3/#version-303-for-elasticsearch-20)                  |
 |    2.0.0               |     3.0.2         | [3.0.2](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.0.2/#version-302-for-elasticsearch-20)                  |
 |    2.0.0-beta2         |     3.0.1         | [3.0.1](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.0.1/#version-301-for-elasticsearch-20)                  |
