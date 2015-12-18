@@ -24,7 +24,6 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.DocumentMapperParser;
 import org.elasticsearch.index.mapper.ParseContext;
-import org.elasticsearch.index.mapper.attachment.AttachmentMapper;
 import org.elasticsearch.index.mapper.attachment.test.MapperTestUtils;
 import org.elasticsearch.index.mapper.core.StringFieldMapper;
 import org.junit.Before;
@@ -51,12 +50,9 @@ public class LanguageDetectionAttachmentMapperTests extends AttachmentUnitTestCa
     }
 
     public void setupMapperParser(boolean langDetect) throws IOException {
-        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(
-                Settings.settingsBuilder()
-                                  .put("path.home", createTempDir())
-                                  .put("index.mapping.attachment.detect_language", langDetect)
-                                 .build());
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.settingsBuilder().put("index.mapping.attachment.detect_language", langDetect).build(),
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/unit/language/language-mapping.json");
         docMapper = mapperParser.parse(mapping);
 

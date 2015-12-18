@@ -32,11 +32,12 @@ import org.elasticsearch.index.Index;
 import org.elasticsearch.index.IndexNameModule;
 import org.elasticsearch.index.analysis.AnalysisModule;
 import org.elasticsearch.index.analysis.AnalysisService;
-import org.elasticsearch.index.mapper.DocumentMapperParser;
 import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.settings.IndexSettingsModule;
 import org.elasticsearch.index.similarity.SimilarityLookupService;
+import org.elasticsearch.indices.IndicesModule;
 import org.elasticsearch.indices.analysis.IndicesAnalysisService;
+import org.elasticsearch.indices.mapper.MapperRegistry;
 
 import java.nio.file.Path;
 import java.util.Locale;
@@ -46,26 +47,26 @@ import static org.elasticsearch.plugin.mapper.attachments.tika.LocaleChecker.isL
 
 public class MapperTestUtils {
 
-    public static MapperService newMapperService(Path tempDir) {
-        return newMapperService(new Index("test"), Settings.builder()
-                .put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT)
-                .put("path.home", tempDir)
-                .build());
+    public static MapperService newMapperService(Path tempDir, Settings indexSettings) {
+        IndicesModule indicesModule = new IndicesModule();
+        return newMapperService(tempDir, indexSettings, indicesModule);
     }
 
-    public static MapperService newMapperService(Index index, Settings indexSettings) {
-        return new MapperService(index,
-                                 indexSettings, 
-                                 newAnalysisService(indexSettings),
-                                 newSimilarityLookupService(indexSettings), 
-                                 null);
-    }
-
-    public static AnalysisService newAnalysisService(Path tempDir) {
-        return newAnalysisService(Settings.builder()
+    public static MapperService newMapperService(Path tempDir, Settings indexSettings, IndicesModule indicesModule) {
+        Settings.Builder settingsBuilder = Settings.builder()
                 .put("path.home", tempDir)
-                .put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT)
-                .build());
+                .put(indexSettings);
+        if (indexSettings.get(IndexMetaData.SETTING_VERSION_CREATED) == null) {
+            settingsBuilder.put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT);
+        }
+        Settings settings = settingsBuilder.build();
+        MapperRegistry mapperRegistry = indicesModule.getMapperRegistry();
+        return new MapperService(new Index("test"),
+                settings,
+                newAnalysisService(settings),
+                newSimilarityLookupService(settings),
+                null,
+                mapperRegistry);
     }
 
     public static AnalysisService newAnalysisService(Settings indexSettings) {
@@ -81,21 +82,6 @@ public class MapperTestUtils {
 
     public static SimilarityLookupService newSimilarityLookupService(Settings indexSettings) {
         return new SimilarityLookupService(new Index("test"), indexSettings);
-    }
-    
-    public static DocumentMapperParser newMapperParser(Path tempDir) {
-      return newMapperParser(Settings.builder()
-                                              .put("path.home", tempDir)
-                                              .build());
-    }
-
-    public static DocumentMapperParser newMapperParser(Settings settings) {
-        Settings forcedSettings = Settings.builder()
-                .put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT)
-                .put(settings)
-                .build();
-        MapperService mapperService = new MapperService(new Index("test"), forcedSettings, newAnalysisService(forcedSettings), newSimilarityLookupService(forcedSettings), null);
-        return new DocumentMapperParser(forcedSettings, mapperService, MapperTestUtils.newAnalysisService(forcedSettings), null, null);
     }
 
     /**

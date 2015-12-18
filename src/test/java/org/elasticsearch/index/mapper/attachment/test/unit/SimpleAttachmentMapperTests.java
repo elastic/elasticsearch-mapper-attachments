@@ -22,14 +22,11 @@ package org.elasticsearch.index.mapper.attachment.test.unit;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.bytes.BytesReference;
-import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.DocumentMapperParser;
-import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.mapper.ParseContext;
-import org.elasticsearch.index.mapper.attachment.AttachmentMapper;
 import org.elasticsearch.index.mapper.attachment.test.MapperTestUtils;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
@@ -43,8 +40,9 @@ import static org.hamcrest.Matchers.*;
 public class SimpleAttachmentMapperTests extends AttachmentUnitTestCase {
 
     public void testSimpleMappings() throws Exception {
-        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(createTempDir());
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.EMPTY,
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/unit/simple/test-mapping.json");
         DocumentMapper docMapper = mapperParser.parse(mapping);
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/attachment/test/sample-files/testXHTML.html");
@@ -70,11 +68,11 @@ public class SimpleAttachmentMapperTests extends AttachmentUnitTestCase {
     }
 
     public void testContentBackcompat() throws Exception {
-        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(Settings.builder()
-            .put("path.home", createTempDir())
-            .put(IndexMetaData.SETTING_VERSION_CREATED, Version.V_1_4_2.id)
-            .build());
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.builder()
+                        .put(IndexMetaData.SETTING_VERSION_CREATED, Version.V_1_4_2.id)
+                        .build(),
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/unit/simple/test-mapping.json");
         DocumentMapper docMapper = mapperParser.parse(mapping);
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/attachment/test/sample-files/testXHTML.html");
@@ -90,8 +88,9 @@ public class SimpleAttachmentMapperTests extends AttachmentUnitTestCase {
      * @throws Exception
      */
     public void testSimpleMappingsWithAllFields() throws Exception {
-        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(createTempDir());
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.EMPTY,
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/unit/simple/test-mapping-all-fields.json");
         DocumentMapper docMapper = mapperParser.parse(mapping);
         byte[] html = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/attachment/test/sample-files/testXHTML.html");
@@ -134,8 +133,9 @@ public class SimpleAttachmentMapperTests extends AttachmentUnitTestCase {
                 .endObject()
                 .endObject()
                 .endObject();
-        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(createTempDir());
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.EMPTY,
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
         DocumentMapper docMapper = mapperParser.parse(mappingBuilder.string());
         // this should not throw an exception
         mapperParser.parse(docMapper.mapping().toString());

@@ -20,12 +20,11 @@
 package org.elasticsearch.index.mapper.attachment.test.unit;
 
 import org.elasticsearch.common.Base64;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.DocumentMapperParser;
-import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.mapper.ParsedDocument;
-import org.elasticsearch.index.mapper.attachment.AttachmentMapper;
 import org.elasticsearch.index.mapper.attachment.test.MapperTestUtils;
 import org.elasticsearch.index.mapper.core.DateFieldMapper;
 import org.elasticsearch.index.mapper.core.StringFieldMapper;
@@ -49,9 +48,9 @@ public class MultifieldAttachmentMapperTests extends AttachmentUnitTestCase {
 
     @Before
     public void setupMapperParser() {
-        mapperParser = MapperTestUtils.newMapperParser(createTempDir());
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
-
+        mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.EMPTY,
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
     }
 
     @After
@@ -96,12 +95,13 @@ public class MultifieldAttachmentMapperTests extends AttachmentUnitTestCase {
         String bytes = Base64.encodeBytes(originalText.getBytes(StandardCharsets.ISO_8859_1));
         threadPool = new ThreadPool("testing-only");
 
-        MapperService mapperService = MapperTestUtils.newMapperService(createTempDir());
-        mapperService.documentMapperParser().putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                Settings.EMPTY,
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
 
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/unit/multifield/multifield-mapping.json");
 
-        DocumentMapper documentMapper = mapperService.documentMapperParser().parse(mapping);
+        DocumentMapper documentMapper = mapperParser.parse(mapping);
 
         ParsedDocument doc = documentMapper.parse("person", "person", "1", XContentFactory.jsonBuilder()
                 .startObject()

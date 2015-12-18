@@ -25,7 +25,6 @@ import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.DocumentMapperParser;
 import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.mapper.ParseContext;
-import org.elasticsearch.index.mapper.attachment.AttachmentMapper;
 import org.elasticsearch.index.mapper.attachment.test.MapperTestUtils;
 import org.junit.Test;
 
@@ -46,8 +45,9 @@ public class MetadataMapperTest extends AttachmentUnitTestCase {
                                              .put(this.testSettings)
                                              .put(otherSettings)
                                              .build();
-        DocumentMapperParser mapperParser = MapperTestUtils.newMapperParser(settings);
-        mapperParser.putTypeParser(AttachmentMapper.CONTENT_TYPE, new AttachmentMapper.TypeParser());
+        DocumentMapperParser mapperParser = MapperTestUtils.newMapperService(createTempDir(),
+                settings,
+                getIndicesModuleWithRegisteredAttachmentMapper()).documentMapperParser();
 
         String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/attachment/test/unit/metadata/test-mapping.json");
         DocumentMapper docMapper = mapperParser.parse(mapping);
