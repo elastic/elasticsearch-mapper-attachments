@@ -1,6 +1,6 @@
 **IMPORTANT**: this project now moved to elasticsearch repository (from elasticsearch 2.2.0): 
 
-* [mapper-attachments](https://github.com/elastic/elasticsearch/tree/master/plugins/mapper-attachments) ([documentation](https://www.elastic.co/guide/en/elasticsearch/plugins/master/mapper-attachments.html))
+* [mapper-attachments](https://github.com/elastic/elasticsearch/tree/5.x/plugins/mapper-attachments) ([documentation](https://www.elastic.co/guide/en/elasticsearch/plugins/5.x/mapper-attachments.html))
 
 If you have a question about the plugin, please use [discuss.elastic.co](https://discuss.elastic.co/c/elasticsearch). 
 If you want to report a bug, please use [elasticsearch repository](https://github.com/elastic/elasticsearch/issues/new).
@@ -27,7 +27,7 @@ You need to install a version matching your Elasticsearch version:
 
 |       Elasticsearch    | Attachments Plugin|                                                             Docs                                                                   |
 |------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------|
-|    > 2.1               | elasticsearch repository | [github](https://github.com/elastic/elasticsearch/tree/master/plugins/mapper-attachments)                  |
+|    > 2.1 < 6.0         | elasticsearch repository | [github](https://github.com/elastic/elasticsearch/tree/5.x/plugins/mapper-attachments)                  |
 |    es-2.1              | Build from source | [es-2.1](https://github.com/elastic/elasticsearch-mapper-attachments/tree/es-2.1/)                  |
 |    2.1.2               |     3.1.2         | [3.1.2](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.1.2/#version-312-for-elasticsearch-21)                  |
 |    2.1.1               |     3.1.1         | [3.1.1](https://github.com/elastic/elasticsearch-mapper-attachments/tree/v3.1.1/#version-311-for-elasticsearch-21)                  |
