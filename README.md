@@ -1,6 +1,6 @@
 **IMPORTANT**: this project now moved to elasticsearch repository (from elasticsearch 2.2.0): 
 
-* [mapper-attachments](https://github.com/elastic/elasticsearch/tree/5.x/plugins/mapper-attachments) ([documentation](https://www.elastic.co/guide/en/elasticsearch/plugins/5.x/mapper-attachments.html))
+* [mapper-attachments](https://github.com/elastic/elasticsearch/tree/5.6/plugins/mapper-attachments) ([documentation](https://www.elastic.co/guide/en/elasticsearch/plugins/5.6/mapper-attachments.html))
 
 If you have a question about the plugin, please use [discuss.elastic.co](https://discuss.elastic.co/c/elasticsearch). 
 If you want to report a bug, please use [elasticsearch repository](https://github.com/elastic/elasticsearch/issues/new).
