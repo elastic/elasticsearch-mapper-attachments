@@ -25,7 +25,7 @@ buildscript {
     mavenCentral()
     maven {
       name 'sonatype-snapshots'
-      url 'http://oss.sonatype.org/content/repositories/snapshots/'
+      url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
     jcenter()
   }
@@ -50,13 +50,13 @@ repositories {
   mavenCentral()
   maven {
     name 'sonatype-snapshots'
-    url 'http://oss.sonatype.org/content/repositories/snapshots/'
+    url 'https://oss.sonatype.org/content/repositories/snapshots/'
   }
   if (luceneVersion.contains('-snapshot')) {
     String revision = (luceneVersion =~ /\d\.\d\.\d-snapshot-(\d+)/)[0][1]
     maven {
       name 'lucene-snapshots'
-      url "http://s3.amazonaws.com/download.elasticsearch.org/lucenesnapshots/${revision}"
+      url "https://s3.amazonaws.com/download.elasticsearch.org/lucenesnapshots/${revision}"
     }
   }
 }
