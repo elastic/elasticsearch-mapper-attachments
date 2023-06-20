@@ -1,4 +1,4 @@
-**IMPORTANT**: this project now moved to elasticsearch repository (from elasticsearch 2.2.0): 
+**IMPORTANT**: this project now Read-Only and moved to elasticsearch repository (from elasticsearch 2.2.0): 
 
 * [mapper-attachments](https://github.com/elastic/elasticsearch/tree/5.6/plugins/mapper-attachments) ([documentation](https://www.elastic.co/guide/en/elasticsearch/plugins/5.6/mapper-attachments.html))
 
